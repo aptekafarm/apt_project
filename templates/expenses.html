@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чиқимлар</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="bg-light">
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div class="sidebar bg-dark text-white p-3">
+            <h4 class="text-center">Меню</h4>
+            <ul class="nav flex-column">
+                <li class="nav-item"><a href="{{ url_for('routes.index') }}" class="nav-link text-white">📊 Кунлик савдо</a></li>                
+                <li class="nav-item"><a href="/product_income" class="nav-link text-white">📦 Товар кирими</a></li>
+                <li class="nav-item"><a href="/hisobotlar" class="nav-link text-white">📋 Ҳисоботлар</a></li>                
+                <li class="nav-item"><a href="{{ url_for('routes.expenses') }}" class="nav-link text-white">💸 Чиқимлар</a></li>
+                <li class="nav-item"><a href="{{ url_for('routes.logout') }}" class="nav-link text-danger">🚪 Чиқиш</a></li>
+            </ul>
+        </div>
+
+        <!-- Контент -->
+        <div class="container-fluid mt-5 p-4 bg-white shadow-lg rounded">
+            <h2 class="text-center mb-4 text-danger">Чиқимлар</h2>
+
+            <form method="POST" action="{{ url_for('routes.add_expense') }}" class="row g-3">
+                <div class="col-md-3">
+                    <label for="sana" class="form-label">📅 Сана:</label>
+                    <input type="date" id="sana" name="sana" class="form-control" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="xarajat_nomi" class="form-label">Харжат номи:</label>
+                    <input type="text" id="xarajat_nomi" name="xarajat_nomi" class="form-control" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="miqdor" class="form-label">Миқдор (сўм):</label>
+                    <input type="number" id="miqdor" name="miqdor" class="form-control" step="0.01" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="izoh" class="form-label">Изоҳ:</label>
+                    <input type="text" id="izoh" name="izoh" class="form-control">
+                </div>
+                <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-danger w-50">➕ Қўшиш</button>
+                </div>
+            </form>
+
+            <h3 class="text-center mt-5 text-dark">📋 Чиқимлар рўйхати</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>📅 Сана</th>
+                            <th>📌 Харжат номи</th>
+                            <th>💰 Миқдор (сўм)</th>
+                            <th>📝 Изоҳ</th>
+                            <th>✏ Таҳрирлаш</th>
+                            <th>🗑️ Ўчириш</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for expense in expenses %}
+                        <tr>
+                            <td>{{ expense.sana }}</td>
+                            <td>{{ expense.xarajat_nomi }}</td>
+                            <td class="fw-bold text-danger">{{ "{:,.0f}".format(expense.miqdor|float).replace(",", " ") }}</td>
+                            <td>{{ expense.izoh }}</td>
+                            <td><a href="{{ url_for('routes.edit_expenses', id=expense.id) }}" class="btn btn-warning btn-sm">Таҳрирлаш</a></td>
+                            <td>
+                                <form action="{{ url_for('routes.delete_expenses', id=expense.id) }}" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Ушбу чиқимни ўчиришга аминмисиз?')">Ўчириш</button>
+                                </form>
+                            </td>
+                            
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr class="table-warning">
+                            <td colspan="2"><strong>ЖАМИ:</strong></td>
+                            <td class="fw-bold text-danger">
+                                <strong>{{ format_number(total_miqdor) }}</strong>
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>                    
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

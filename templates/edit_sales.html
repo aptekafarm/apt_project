@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тушумни таҳрирлаш</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5 p-4 bg-white shadow-lg rounded">
+        <h2 class="text-center text-primary">Тушумни таҳрирлаш</h2>
+        <form method="POST" class="row g-3">
+            <div class="col-md-6">
+                <label for="sana" class="form-label">Сана:</label>
+                <input type="date" id="sana" name="sana" class="form-control" value="{{ sale['sana'] }}" required>
+            </div>
+            <div class="col-md-6">
+                <label for="inkassa" class="form-label">Инкасса:</label>
+                <input type="number" id="inkassa" name="inkassa" class="form-control" value="{{ sale['inkassa'] }}" step="0.01" required>
+            </div>
+            <div class="col-md-6">
+                <label for="terminal_term" class="form-label">Терминал (Uzcard):</label>
+                <input type="number" id="terminal_term" name="terminal_term" class="form-control" value="{{ sale['terminal_term'] }}" step="0.01" required>
+            </div>
+            <div class="col-md-6">
+                <label for="terminal_humo" class="form-label">Терминал (Humo):</label>
+                <input type="number" id="terminal_humo" name="terminal_humo" class="form-control" value="{{ sale['terminal_humo'] }}" step="0.01" required>
+            </div>
+            <div class="col-md-6">
+                <label for="nakd" class="form-label">Нахд:</label>
+                <input type="number" id="nakd" name="nakd" class="form-control" value="{{ sale['nakd'] }}" step="0.01" required>
+            </div>
+            <div class="col-12 text-center">
+                <button type="submit" class="btn btn-success w-50">Сақлаш</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

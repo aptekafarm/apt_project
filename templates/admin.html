@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Фойдаланувчилар</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="d-flex">
+    <!-- ✅ Sidebar -->
+    <div class="sidebar bg-dark text-white p-3">
+        <h4 class="text-center">Меню</h4>
+        <ul class="nav flex-column">
+            <li class="nav-item"><a href="{{ url_for('routes.index') }}" class="nav-link text-white">📊 Кунлик савдо</a></li>
+            <li class="nav-item"><a href="{{ url_for('routes.expenses') }}" class="nav-link text-white">💸 Чиқимлар</a></li>
+            <li class="nav-item"><a href="{{ url_for('routes.product_income') }}" class="nav-link text-white">📦 Товар кирими</a></li>
+            <li class="nav-item"><a href="{{ url_for('routes.hisobot_page') }}" class="nav-link text-white">📋 Ҳисоботлар</a></li>
+            <li class="nav-item"><a href="{{ url_for('routes.admin_panel') }}" class="nav-link text-white bg-secondary fw-bold">🧩 Админ</a></li>
+            <li class="nav-item"><a href="{{ url_for('routes.logout') }}" class="nav-link text-danger">🚪 Чиқиш</a></li>
+            <li><a href="{{ url_for('routes.users_online_view') }}">🟢 Онлайн фойдаланувчилар</a></li>
+        </ul>
+    </div>
+
+    <!-- ✅ Kontent qismi -->
+    <div class="container mt-5 bg-white shadow-lg p-4 rounded">
+        <h2 class="text-center text-primary mb-4">👤 Фойдаланувчилар рўйхати</h2>
+        <form method="POST" action="{{ url_for('routes.add_user') }}" class="row g-3 mb-4">
+            <div class="col-md-3">
+                <input type="text" name="username" class="form-control" placeholder="Фойдаланувчи номи" required>
+            </div>
+            <div class="col-md-3">
+                <input type="password" name="password" class="form-control" placeholder="Парол" required>
+            </div>
+            <div class="col-md-3">
+                <select name="role" class="form-control">
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+            <div class="col-md-3 text-end">
+                <button type="submit" class="btn btn-success w-100">➕ Қўшиш</button>
+            </div>
+        </form>
+
+        <table class="table table-bordered text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Фойдаланувчи</th>
+                    <th>Role</th>
+                    <th>✏ Ўчириш</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.role }}</td>
+                    <td>
+                        {% if user.username != 'admin' %}
+                        <form method="POST" action="{{ url_for('routes.delete_user', id=user.id) }}">
+                            <button class="btn btn-danger btn-sm" onclick="return confirm('Ўчирилсинми?')">Ўчириш</button>
+                        </form>
+                        {% else %}
+                        <span class="text-muted">Admin</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

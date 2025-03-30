@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="text-center mt-4">🧾 Аудит лог — амаллар тарихи</h2>
+<a href="{{ url_for('routes.index') }}" class="btn btn-secondary mt-3">⬅️ Орқага қайтиш</a>
+<table class="table table-bordered mt-3">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Фойдаланувчи</th>
+            <th>Амал</th>
+            <th>Жадвал</th>
+            <th>Ёзув ID</th>
+            <th>Вақти</th>
+            <th>Тафсилотлар</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for log in logs %}
+        <tr>
+            <td>{{ log.id }}</td>
+            <td>{{ log.username }}</td>
+            <td>{{ log.action }}</td>
+            <td>{{ log.table_name }}</td>
+            <td>{{ log.record_id or "-" }}</td>
+            <td>{{ log.timestamp }}</td>
+            <td>{{ log.details }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

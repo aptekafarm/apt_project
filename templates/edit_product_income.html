@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Товар киримини таҳрирлаш</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5 p-4 bg-white shadow-lg rounded">
+        <h2 class="text-center text-primary">✏ Товар киримини таҳрирлаш</h2>
+        <form method="POST" class="row g-3">
+            <div class="col-md-6">
+                <label for="sana" class="form-label">📅 Сана:</label>
+                <input type="date" id="sana" name="sana" class="form-control" value="{{ income.sana }}" required>
+            </div>
+            <div class="col-md-6">
+                <label for="yetkazib_beruvchi" class="form-label">🚚 Йетказиб берувчи:</label>
+                <input type="text" id="yetkazib_beruvchi" name="yetkazib_beruvchi" class="form-control" value="{{ income.yetkazib_beruvchi }}" required>
+            </div>
+            <div class="col-md-4">
+                <label for="summa_prixod" class="form-label">💰 Сумма приход:</label>
+                <input type="number" id="summa_prixod" name="summa_prixod" class="form-control" value="{{ income.summa_prixod }}" required>
+            </div>
+            <div class="col-md-4">
+                <label for="summa_roznichn" class="form-label">📊 Сумма розничн:</label>
+                <input type="number" id="summa_roznichn" name="summa_roznichn" class="form-control" value="{{ income.summa_roznichn }}" step="0.01" required>
+            </div>
+            <div class="col-md-4">
+                <label for="perechesleniya" class="form-label">🏦 Перечесления:</label>
+                <input type="number" id="perechesleniya" name="perechesleniya" class="form-control" value="{{ income.perechesleniya }}">
+            </div>
+            <div class="col-md-4">
+                <label for="nakd_pul" class="form-label">💵 Нақд:</label>
+                <input type="number" id="nakd_pul" name="nakd_pul" class="form-control" value="{{ income.nakd_pul }}">
+            </div>
+            <div class="col-12 text-center">
+                <button type="submit" class="btn btn-success w-50">Сақлаш</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

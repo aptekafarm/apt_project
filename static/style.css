@@ -1,0 +1,165 @@
+/* Umumiy stillar */
+body {
+    background-color: #f8f9fa;
+}
+
+/* Sarlavha stillari */
+h2, h3 {
+    font-weight: bold;
+}
+.sidebar {
+    width: 200px;
+    min-height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1050; /* Жадвал юқори чиқмаслиги учун */
+}
+
+.sidebar .nav-link {
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #28a745;
+    color: white !important;
+}
+
+.sidebar h4 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+/* Tugmalar uchun umumiy stil */
+.btn-success, .btn-danger, .btn-warning {
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 8px;
+}
+/* Kichik tugma stili */
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* Umumiy jadval stillari */
+.table {
+    width: 100%;
+    table-layout: auto;
+    font-size: 14px;
+}
+.table th {
+    background-color: #343a40 !important;
+    color: white !important;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.table-hover tbody tr:hover {
+    background-color: #f1f1f1;
+}
+.table td, .table th {
+    padding: 8px;
+    white-space: nowrap;
+    text-align: right;
+    font-size: 14px;
+}
+/* Jadval jami qatori */
+.total-row {
+    font-weight: bold;
+    background-color: #fff3cd;
+}
+.total-row td {
+    font-size: 16px;
+    color: #d9534f;
+    text-align: right;
+    font-weight: bold;
+}
+/* Qarzlar uchun maxsus rang */
+.text-danger {
+    font-weight: bold;
+    color: red !important;
+}
+/* Умумий саҳифа контейнери (менюдан четда туриши учун) */
+.container-fluid {
+    margin-left: 210px;  /* менюдан кейинги жой */
+    padding: 20px;
+    overflow: hidden;  /* Умумий ойнадаги тепа-паст скролл олиб ташланади */
+    max-width: calc(100% - 210px); 
+    height: 100vh; /* экран баландлигига мослаш */
+    display: flex; /* Ичидаги элементларни тулиқ контейнерга ёйиш учун */
+    flex-direction: column;
+}
+
+/* Жадвалларни экранга тўлиқ мослаш учун умумий класс */
+.table-responsive {
+    flex-grow: 1; /* контейнерни бўш қолган жойини тўлдириб ёйилади */
+    overflow-y: auto; /* фақат жадвал учун ички вертикал скролл қолади */
+    overflow-x: hidden;
+}
+
+/* Формаларни кичиклаштириш ва экранга мослаштириш учун умумий класс */
+.form-control {
+    font-size: 14px;
+    padding: 6px 10px;
+}
+
+/* "Товар кирими" учун махсус стиллар (янада оптималлаштирилган) */
+.product-income-container {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa;
+    z-index: 1000;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100% !important; /* энини тўлиқ экран бўйича созлаш */
+    margin-left: 0 !important; /* чап томондан ортиқча масофани ўчириш */
+    margin-right: 0 !important; /* ўнг томондан ортиқча масофани ўчириш */
+    max-width: none !important; /* максимал энини экран бўйича тўлиқ очиб юборади */
+}
+
+.product-income-table th {
+    position: sticky; /* сарлавҳани тепага ёпиштириб қўйиш */
+    top: 0;
+    background-color: #343a40 !important;
+    color: #fff !important;
+    z-index: 1020; 
+}
+.product-income-table td {
+    padding: 8px !important;
+    font-size: 14px !important;
+}
+
+/* Товар кирими бўлими контейнерини экран юқорида мустаҳкамлаш учун */
+.product-income-table {
+    font-size: 14px;
+    width: 100% !important; /* Контейнер кенглигини бутунлай эгаллаш */
+    table-layout: auto; 
+}
+/* Агар шакл ва тугмаларни ортиқча жой олмаслиги керак бўлса */
+.product-income-form {
+    margin-bottom: 10px;
+}
+/* Жадвал контейнери учун аниқ кўрсатма */
+.table-responsive {
+    max-height: calc(100vh - 170px); /* экран баландлигидан келиб чиқиб созланади */
+    overflow-y: auto; /* Вертикал ҳаракатланишни таъминлаш */
+    overflow-x: hidden; /* горизонтал ҳаракатланишни бекор қилиш */
+    padding: 0 !important; /* ортиқча масофани йўқ қилиш */
+    margin: 0 !important;
+}
+
+table thead th {
+    position: sticky; /* сарлавҳани юқорида мустаҳкамлаймиз */
+    top: 0;
+    z-index: 10;
+    background-color: #343a40 !important; /* сарлавҳа фони ранги (сизнинг ранга мос) */
+    color: white !important;
+}
+body, html {
+    overflow: hidden; /* бутун экрандаги умумий скроллни ўчириш */
+    height: 100%; /* экран баландлигига мослаштириш */
+}

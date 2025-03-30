@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кунлик савдо</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">  
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="bg-light">
+    <div class="d-flex">
+        <!-- Sidebar (Чап меню) -->
+        <div class="sidebar bg-dark text-white p-3">
+            <h4 class="text-center">Меню</h4>
+            <ul class="nav flex-column">
+                <li class="nav-item"><a href="/" class="nav-link text-white">📊 Кунлик савдо</a></li>
+                <li class="nav-item"><a href="{{ url_for('routes.product_income') }}" class="nav-link text-white">📦 Товар кирими</a></li>                
+                <li class="nav-item"><a href="/expenses" class="nav-link text-white">💸 Чиқимлар</a></li>                
+                <li class="nav-item"><a href="{{ url_for('routes.hisobot_page') }}" class="nav-link text-white">📋 Ҳисоботлар</a></li>
+                {% if session.get("role") == "admin" %}
+                <li class="nav-item"><a href="{{ url_for('routes.admin_panel') }}" class="nav-link text-white">🧩 Админ</a></li>
+                {% endif %}
+                <li class="nav-item"><a href="{{ url_for('routes.logout') }}" class="nav-link text-danger">🚪 Чиқиш</a></li>
+                
+            </ul>
+        </div>
+
+        <!-- Main content -->
+        <div class="container-fluid mt-5 p-4 bg-white shadow-lg rounded">
+            <h2 class="text-center mb-4 text-primary">Кунлик савдо тушуми</h2>
+
+            <form method="POST" action="{{ url_for('routes.add_sale') }}" class="row g-3">
+                <div class="col-md-4">
+                    <label for="sana" class="form-label">📅 Сана:</label>
+                    <input type="date" id="sana" name="sana" class="form-control" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="inkassa" class="form-label">💵 Инкасса:</label>
+                    <input type="number" id="inkassa" name="inkassa" class="form-control" step="0.01" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="terminal_term" class="form-label">💳 Терминал (Uzcard):</label>
+                    <input type="number" id="terminal_term" name="terminal_term" class="form-control" step="0.01" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="terminal_humo" class="form-label">💳 Терминал (HUMO):</label>
+                    <input type="number" id="terminal_humo" name="terminal_humo" class="form-control" step="0.01" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="nakd" class="form-label">💰 Нақд:</label>
+                    <input type="number" id="nakd" name="nakd" class="form-control" step="0.01" required>
+                </div>
+                <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-success w-50">➕ Қўшиш</button>
+                </div>
+            </form>
+
+            <h3 class="text-center mt-5 text-dark">📊 Савдо маълумотлари</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>📅 Сана</th>
+                            <th>💵 Инкасса</th>
+                            <th>💳 Терминал (Uzcard)</th>
+                            <th>💳 Терминал (HUMO)</th>
+                            <th>💰 Нақд</th>
+                            <th>📊 Жами тушум</th>
+                            <th>✏ Таҳрирлаш</th>
+                            <th>🗑️ Ўчириш</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sale in sales %}
+                        <tr>
+                            <td>{{ sale.sana }}</td>
+                            <td>{{ "{:,.0f}".format(sale.inkassa).replace(",", " ") }}</td>
+                            <td>{{ "{:,.0f}".format(sale.terminal_term).replace(",", " ") }}</td>
+                            <td>{{ "{:,.0f}".format(sale.terminal_humo).replace(",", " ") }}</td>
+                            <td>{{ "{:,.0f}".format(sale.nakd).replace(",", " ") }}</td>
+                            <td class="fw-bold text-success">{{ "{:,.0f}".format(sale.jami_tushum).replace(",", " ") }}</td>
+                            <td>
+                                <a href="{{ url_for('routes.edit_sales', id=sale['id']) }}" class="btn btn-warning btn-sm">Таҳрирлаш</a>
+                            </td>
+                            <td>
+                                <form action="{{ url_for('routes.delete_sales', id=sale['id']) }}" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Ушбу савдони ўчиришга аминмисиз?')">Ўчириш</button>
+                                </form>
+                            </td>                            
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const input = document.getElementById("tovar_qoldigi_boshida");
+                        const password = document.getElementById("admin_password");
+                        
+                        function autoSave() {
+                            const value = input.value;
+                            const pass = password.value;
+                        
+                            fetch("/update_tovar_qoldigi", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/x-www-form-urlencoded",
+                                },
+                                body: `tovar_qoldigi_boshida=${encodeURIComponent(value)}&admin_password=${encodeURIComponent(pass)}`
+                            }).then(response => response.text()).then(msg => {
+                                console.log("Жавоб:", msg);
+                            });
+                        }
+                        
+                        input.addEventListener("change", autoSave);
+                        password.addEventListener("change", autoSave);
+                    });
+                    </script>
+                        
+                    <tfoot>
+                        <tr class="table-warning">
+                            <td><strong>ЖАМИ:</strong></td>
+                            <td>{{ total_inkassa }}</td>
+                            <td>{{ total_terminal_term }}</td>
+                            <td>{{ total_terminal_humo }}</td>
+                            <td>{{ total_nakd }}</td>
+                            <td class="fw-bold text-success">{{ total_jami_tushum }}</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>                    
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📦 Товар кирими</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="bg-light">
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div class="sidebar bg-dark text-white p-3">
+            <h4 class="text-center">Меню</h4>
+            <ul class="nav flex-column">
+                <li class="nav-item"><a href="{{ url_for('routes.index') }}" class="nav-link text-white">📊 Кунлик савдо</a></li>
+                <li class="nav-item"><a href="{{ url_for('routes.expenses') }}" class="nav-link text-white">💸 Чиқимлар</a></li>
+                <li class="nav-item"><a href="{{ url_for('routes.product_income') }}" class="nav-link text-white">📦 Товар кирими</a></li>
+                <li class="nav-item"><a href="{{ url_for('routes.logout') }}" class="nav-link text-danger">🚪 Чиқиш</a></li>
+            </ul>
+        </div>
+
+        <div class="container-fluid mt-5 p-4 bg-white shadow-lg rounded">
+
+            <!-- Бу контейнер юқорида ёпишиб қолади -->
+            <div class="product-income-container sticky-top bg-white shadow-sm rounded py-2">
+                <h2 class="text-center text-primary">📦 Товар кирими</h2>
+
+                <form method="POST" action="{{ url_for('routes.add_product_income') }}" class="product-income-form row g-3">
+                    <div class="col-md-2">
+                        <label for="sana" class="form-label">📅 Сана:</label>
+                        <input type="date" id="sana" name="sana" class="form-control" required>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="yetkazib_beruvchi" class="form-label">🚚 Етказиб берувчи:</label>
+                        <input type="text" id="yetkazib_beruvchi" name="yetkazib_beruvchi" class="form-control" required>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="summa_prixod" class="form-label">💰 Сумма приход:</label>
+                        <input type="number" id="summa_prixod" name="summa_prixod" class="form-control" step="0.01" required>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="summa_roznichn" class="form-label">💰 Сумма розничн:</label>
+                        <input type="number" id="summa_roznichn" name="summa_roznichn" class="form-control" step="0.01" required>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="perechesleniya" class="form-label">🏦 Перечесления:</label>
+                        <input type="number" id="perechesleniya" name="perechesleniya" class="form-control" step="0.01" required>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="nakd_pul" class="form-label">💵 Нақд:</label>
+                        <input type="number" id="nakd_pul" name="nakd_pul" class="form-control" step="0.01" required>
+                    </div>
+                    <div class="col-12 text-center">
+                        <button type="submit" class="btn btn-success w-50">➕ Қўшиш</button>
+                    </div>
+                </form>
+
+            </div>
+            <div class="container-fluid product-income-container">
+                <h3 class="text-center mt-3 text-dark">📋 Товар кирими рўйхати</h3>
+                <!-- Жадвал пастда алоҳида контейнерда -->
+                <div class="table-responsive mt-3">
+                    <table class="table product-income-table">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>📅 Сана</th>
+                                <th>🚚 Етказиб берувчи</th>
+                                <th>💰 Сумма приход</th>
+                                <th>💰 Сумма розничн</th>
+                                <th>% Наценка</th>
+                                <th>💳 Перечесления</th>
+                                <th>💵 Нақд</th>
+                                <th>❗ Қарз</th>
+                                <th>✏ Таҳрирлаш</th>
+                                <th>🗑️ Ўчириш</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in income_list %}
+                            <tr>
+                                <td>{{ item.sana }}</td>
+                                <td>{{ item.yetkazib_beruvchi }}</td>
+                                <td>{{ format_number(item.summa_prixod) }}</td>
+                                <td>{{ format_number(item.summa_roznichn) }}</td>
+                                <td>{{ "%.2f"|format(item.natsenka) }}%</td>
+                                <td>{{ format_number(item.perechesleniya) }}</td>
+                                <td>{{ format_number(item.nakd_pul) }}</td>
+                                <td class="text-danger fw-bold">{{ format_number(item.qarz) }}</td>
+                                <td><a href="{{ url_for('routes.edit_product_income', id=item.id) }}" class="btn btn-warning btn-sm">Таҳрирлаш</a></td>
+                                <td>
+                                    <form action="{{ url_for('routes.delete_product_income', id=item.id) }}" method="post" style="display:inline;">
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Ушбу киримни ўчиришга аминмисиз?')">Ўчириш</button>
+                                    </form>
+                                </td>
+                                
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2"><b>Жами:</b></td>
+                                <td><b>{{ format_number(total_summa_prixod) }}</b></td>
+                                <td><b>{{ format_number(total_summa_roznichn) }}</b></td>
+                                <td><b>{{ "%.2f"|format(total_natsenka) }}%</b></td>
+                                <td><b>{{ format_number(total_perechesleniya) }}</b></td>
+                                <td><b>{{ format_number(total_nakd_pul) }}</b></td>
+                                <td><b class="text-danger">{{ format_number(total_qarz) }}</b></td>
+                                <td></td>
+                            </tr>
+                        </tfoot>  
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</body>
+</html>
+

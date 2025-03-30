@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: apt-web
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    plan: free
+    envVars:
+      - key: SECRET_KEY
+        value: bu_juda_maxfiy_kalit_123

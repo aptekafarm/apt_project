@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Маълумотлар Ҳисоботи</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="d-flex">
+        <!-- Sidebar (Меню) -->
+        <div class="sidebar bg-dark text-white p-3">
+            <h4 class="text-center">Меню</h4>
+            <ul class="nav flex-column">
+                <li class="nav-item"><a href="/" class="nav-link text-white">📊 Кунлик савдо</a></li>
+                <li class="nav-item"><a href="/hisobotlar" class="nav-link text-white">📋 Ҳисоботлар</a></li>
+                <li class="nav-item"><a href="/expenses" class="nav-link text-white">💸 Чиқимлар</a></li>
+                <li class="nav-item"><a href="/product_income" class="nav-link text-white">📦 Товар кирими</a></li>
+                <li><a href="/audit_log">📋 Аудит лог</a></li>
+                <li><a href="{{ url_for('routes.users_online_view') }}">🟢 Онлайн фойдаланувчилар</a></li>
+            </ul>
+        </div>
+    <div class="container mt-4">
+        <h2 class="text-center">📊 Маълумотлар Ҳисоботи</h2>
+
+        <div class="card p-3 mb-4">
+            <h5>📦 Бошланғич товар қолдиғини киритинг:</h5>
+            <form method="POST" action="{{ url_for('routes.update_tovar_qoldigi') }}" class="row g-2">
+                <div class="col-md-4">
+                    <input type="text" name="tovar_qoldigi_boshida" class="form-control" 
+                           placeholder="Масалан: 1000000" value="{{ tovar_qoldigi_boshida }}" required>
+                </div>
+                <div class="col-md-4">
+                    <input type="password" name="admin_password" class="form-control" 
+                           placeholder="Паролни киритинг" required>
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-success w-100">✅ Сақлаш</button>
+                </div>
+            </form>
+        </div>
+        
+        <table class="table table-bordered table-striped mt-3">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>Жами савдо</th>
+                    <th>Жами товар кирими</th>
+                    <th>Жами харажатлар</th>
+                    <th>Бошлангич товар колдиги суммаси</th>
+                    <th>Товар қолдиғи кун охирида</th>
+                </tr>
+            </thead>
+            
+            
+            <tbody>
+                {% set row = hisobotlar[0] %}
+                <tr>
+                    <td>{{ "{:,.0f}".format(row.jami_savdo).replace(",", " ") }}</td>
+                    <td>{{ "{:,.0f}".format(row.jami_tovar_kirimi).replace(",", " ") }}</td>
+                    <td>{{ "{:,.0f}".format(row.jami_harajatlar).replace(",", " ") }}</td>
+                    <td>{{ "{:,.0f}".format(tovar_qoldigi_boshida).replace(",", " ") }}</td>
+                    <td>{{ "{:,.0f}".format(row.tovar_qoldigi_oxirida).replace(",", " ") }}</td>
+                </tr>
+            </tbody>
+            
+        </table>
+    </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const input = document.getElementById("admin_password");
+        input.addEventListener("change", function () {
+            const form = input.closest("form");
+            if (input.value.trim() !== "") {
+                form.submit();
+            }
+        });
+    });
+    </script>
+        
+</body>
+</html>
